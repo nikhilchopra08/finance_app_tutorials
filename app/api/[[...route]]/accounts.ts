@@ -33,10 +33,12 @@ const app = new Hono()
 })
     .post(
         "/" ,
-        zValidator("json" , insertAccountSchema.pick({
-            name:true,
-        })),
         clerkMiddleware(),
+        zValidator("json" , 
+          insertAccountSchema.pick({
+            name:true,
+        })
+      ),
         async (c) => {
             const auth = getAuth(c);
             const values = c.req.valid("json");
@@ -45,11 +47,14 @@ const app = new Hono()
                 return c.json({error : "unauthorised"} , 401)
             }
 
-            const [data] = await db.insert(accounts).values({
+            const [data] = await db
+              .insert(accounts)
+              .values({
                 id: createId(),
                 userId : auth.userId,
                 ...values,
-            }).returning();
+            })
+            .returning();
 
             return c.json({ data })
         })

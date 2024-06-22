@@ -17,38 +17,39 @@ import {
 import { insertAccountSchema } from "@/db/schema";
 
 const formSchema = insertAccountSchema.pick({
-    name : true,
-});
-
-type FormValues = z.input<typeof formSchema>
-
-type Props = {
+    name: true,
+  });
+  
+  type FormValues = z.input<typeof formSchema>;
+  
+  type Props = {
     id?: string;
     defaultValues?: FormValues;
-    onSubmit : (values : FormValues) => void;
+    onSubmit: (values: FormValues) => void;
     onDelete?: () => void;
     disabled?: boolean;
-}
-
-export const AccountForm = ({
+  };
+  
+  export const AccountForm = ({
     id,
     defaultValues,
     onSubmit,
     onDelete,
     disabled,
-}: Props) => {
+  }: Props) => {
     const form = useForm<FormValues>({
-        resolver : zodResolver(formSchema),
-        defaultValues : defaultValues
+      resolver: zodResolver(formSchema),
+      defaultValues: defaultValues,
     });
-
-    const handleSubmit = (values : FormValues) => {
-        console.log({values});
-    }
-
+  
+    const handleSubmit = (values: FormValues) => {
+      onSubmit(values);
+    };
+  
     const handleDelete = () => {
-        onDelete?.();
-    }
+      onDelete?.();
+    };
+  
 
     return (
         <Form {...form}>
@@ -69,6 +70,12 @@ export const AccountForm = ({
                             </FormControl>
                         </FormItem>
                     )} />
+
+            <Button className="w-full" disabled={disabled}>{id ? "save changes" : "create account"}</Button>
+            {!!id && (<Button type="button" disabled={disabled} onClick={handleDelete} className="w-full" size="icon" variant="outline">
+                <Trash className="size-4 mr-2"/>
+                Delete Account
+            </Button>)}
             </form>
         </Form>
     )
