@@ -10,6 +10,35 @@ import {
 import { UseNewAccounts } from "@/features/accounts/hooks/use-new-accounts";
 import { Plus } from "lucide-react";
 
+import { Payment, columns } from "./column";
+import { DataTable } from "@/components/Data-Table";
+
+const data : Payment[] = [
+    {
+        id: "728ed52f",
+        amount: 100,
+        status: "pending",
+        email: "m@example.com",
+      },
+      {
+        id: "728ed52f",
+        amount: 300,
+        status: "sucess",
+        email: "a@example.com",
+      },
+]
+
+async function getData() : Promise<Payment[]> {
+    return [
+        {
+            id: "728ed52f",
+            amount: 100,
+            status: "pending",
+            email: "m@example.com",
+          },
+    ]
+}
+
 const AccountsPage = () => {
     const newAccount = UseNewAccounts();
 
@@ -25,6 +54,9 @@ const AccountsPage = () => {
                         Add new
                     </Button>
                 </CardHeader>
+                <CardContent >
+                    <DataTable filterKey="email" columns={columns} data={data} />
+                </CardContent>
             </Card>
         </div>
     )
