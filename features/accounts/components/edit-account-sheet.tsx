@@ -13,6 +13,8 @@ import { useOpenAccount } from "../hooks/use-open-accounts";
 import { useGetAccount } from "../api/use-get-account";
 import { Loader2 } from "lucide-react";
 import { useEditAccount } from "../api/use-edit-account";
+import { useDeleteAccount } from "../api/use-delete-account";
+import { useConfirm } from "@/hooks/use-confirm";
 
 const formSchema = insertAccountSchema.pick({
     name: true,
@@ -22,13 +24,19 @@ const formSchema = insertAccountSchema.pick({
   
   export const EditAccountSheet = () => {
     const { isOpen, onClose , id} = useOpenAccount();
+
+    const [ConfirmDialog, confirm] = useConfirm(
+      "Are you sure?",
+      "You are about to delete this transaction"
+    );
   
     const accountQuery = useGetAccount(id);
     const editMutation = useEditAccount(id);
+    const deleteMutation = useDeleteAccount(id);
 
     const isPending = 
-      editMutation.isPending
-
+      editMutation.isPending ||
+      deleteMutation.isPending;
     
     const isLoading = accountQuery.isLoading;
   
@@ -40,6 +48,19 @@ const formSchema = insertAccountSchema.pick({
       });
     };
 
+    const onDelete = async () => {
+      console.log("up")
+      const ok = await confirm();
+      console.log("down")
+      if (ok) {
+        deleteMutation.mutate(undefined , {
+          onSuccess : () => {
+            onClose();
+          }
+        })
+      }
+    };
+
     const defaultValues = accountQuery.data
     ? {
         name: accountQuery.data.name,
@@ -49,6 +70,8 @@ const formSchema = insertAccountSchema.pick({
       };
   
     return (
+      <>
+      <ConfirmDialog/>
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent className="space-y-4">
           <SheetHeader>
@@ -68,9 +91,11 @@ const formSchema = insertAccountSchema.pick({
                 onSubmit={onSubmit}
                 disabled={isPending}
                 defaultValues={ defaultValues }
+                onDelete={onDelete}
               />
             )}
         </SheetContent>
       </Sheet>
+      </>
     );
   };
