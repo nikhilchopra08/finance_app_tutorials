@@ -1,14 +1,14 @@
 import { boolean } from "drizzle-orm/mysql-core";
 import {create} from "zustand";
 
-type openAccountState = {
+type openCategoryState = {
     id?: string,
     isOpen: boolean,
     onOpen: (id : string) => void;
     onClose: () => void;
 };
 
-export const useOpenAccount = create<openAccountState>((set) => ({
+export const useOpenCategory = create<openCategoryState>((set) => ({
     id : undefined,
     isOpen : false,
     onOpen: (id : string) => set({ isOpen : true , id}),

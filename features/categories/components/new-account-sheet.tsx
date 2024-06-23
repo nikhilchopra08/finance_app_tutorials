@@ -5,11 +5,11 @@ import {
     SheetHeader,
     SheetTitle
 } from "@/components/ui/sheet";
-import { UseNewAccounts } from "../hooks/use-new-accounts";
+import { UseNewAccounts } from "../hooks/use-new-category";
 import { AccountForm } from "./account-form";
 import { insertAccountSchema } from "@/db/schema";
 import {z} from "zod";
-import { useCreateAccount } from "../api/use-create-account";
+import { useCreateAccount } from "../api/use-create-category";
 
 const formSchema = insertAccountSchema.pick({
     name: true,
