@@ -14,9 +14,9 @@ import {
     FormMessage
 
 } from "@/components/ui/form"
-import { insertAccountSchema } from "@/db/schema";
+import { insertCategorySchema } from "@/db/schema";
 
-const formSchema = insertAccountSchema.pick({
+const formSchema = insertCategorySchema.pick({
     name: true,
   });
   
@@ -30,7 +30,7 @@ const formSchema = insertAccountSchema.pick({
     disabled?: boolean;
   };
   
-  export const AccountForm = ({
+  export const CategoryForm = ({
     id,
     defaultValues,
     onSubmit,
@@ -65,16 +65,16 @@ const formSchema = insertAccountSchema.pick({
                             <FormControl>
                                 <Input 
                                     disabled={disabled}
-                                    placeholder="eg. Cash"
+                                    placeholder="eg. Food , Travel , Miscellaneous"
                                     {...field} />
                             </FormControl>
                         </FormItem>
                     )} />
 
-            <Button className="w-full" disabled={disabled}>{id ? "save changes" : "create account"}</Button>
+            <Button className="w-full" disabled={disabled}>{id ? "save changes" : "create category"}</Button>
             {!!id && (<Button type="button" disabled={disabled} onClick={handleDelete} className="w-full" size="icon" variant="outline">
                 <Trash className="size-4 mr-2"/>
-                Delete Account
+                Delete category
             </Button>)}
             </form>
         </Form>
