@@ -5,6 +5,7 @@ import { zValidator } from "@hono/zod-validator";
 import { clerkMiddleware , getAuth } from "@hono/clerk-auth";
 import accounts from "./accounts"
 import { HTTPException } from "hono/http-exception";
+import categories from "./categories"
 
 // import authors from "./authors";
 // import books from "./books";
@@ -23,7 +24,9 @@ const app = new Hono().basePath('/api')
 //     )
 // })
 
-const routes = app.route("/accounts" , accounts)
+const routes = app
+    .route("/accounts" , accounts)
+    .route("categories" , categories)
 
 
 // by default
