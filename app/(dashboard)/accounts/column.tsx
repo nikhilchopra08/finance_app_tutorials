@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Actions } from "./actions";
 
 // this type is used to define our data 
 // can use zod schema here 
@@ -56,5 +57,9 @@ export const columns : ColumnDef<ResponseType>[] = [
                             <ArrowUpDown className="ml-4 h-4 w-4"/>
                         </Button>
                     )},
-        }
+    },
+    {
+        id : "actions",
+        cell: ({ row }) => <Actions id={row.original.id}/>
+    }
 ]
