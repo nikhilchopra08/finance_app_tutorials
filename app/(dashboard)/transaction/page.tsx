@@ -7,7 +7,7 @@ import {
     CardTitle,
     CardHeader
  } from "@/components/ui/card"
-import { UseNewAccounts } from "@/features/accounts/hooks/use-new-accounts";
+import { UseNewTransactions } from "@/features/transactions/hooks/use-new-transactions";
 import { Loader2, Plus } from "lucide-react";
 
 import { columns } from "./column";
@@ -43,8 +43,8 @@ import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-a
 //     ]
 // }
 
-const AccountsPage = () => {
-    const newAccount = UseNewAccounts();
+const TransactionPage = () => {
+    const newTransaction = UseNewTransactions();
     const AccountQuery = useGetAccounts();
     const deleteAccounts = useBulkDeleteAccounts();
 
@@ -76,9 +76,9 @@ const AccountsPage = () => {
             <Card className="border-none drop-shadow-sm">
                 <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
                     <CardTitle className="text-xl line-clamp-1">
-                        Hello
+                        Transaction History
                     </CardTitle>
-                    <Button size="sm" onClick={newAccount.onOpen}>
+                    <Button size="sm" onClick={newTransaction.onOpen}>
                         <Plus className="size-4 mr-2" />
                         Add new
                     </Button>
@@ -94,4 +94,4 @@ const AccountsPage = () => {
     )
 }
 
-export default AccountsPage;
+export default TransactionPage;
