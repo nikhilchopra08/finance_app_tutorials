@@ -3,7 +3,7 @@ import { db } from "@/db/dirzzle";
 import { transactions, insertTransactionSchema , categories, accounts} from "@/db/schema";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 // import { HTTPException } from "hono/http-exception";
-import { and , desc, eq , inArray, lte, sql} from "drizzle-orm";
+import { and , desc, eq , gte, inArray, lte, sql} from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import {createId} from "@paralleldrive/cuid2"
 import { z } from "zod"
@@ -140,6 +140,39 @@ const app = new Hono()
 
             return c.json({ data })
     })
+    .post(
+      "/bulk-create",
+      clerkMiddleware(),
+      zValidator(
+        "json",
+        z.array(
+          insertTransactionSchema.omit({
+            id : true,
+          }),
+        ),
+      ),
+
+      async (c) => {
+        const auth = getAuth(c);
+        const values = c.req.valid("json");
+
+        if(!auth?.userId){
+          return c.json({ error : "unAuthorised id"} , 401);
+        }
+
+        const data = await db
+          .insert(transactions)
+          .values(
+            values.map((value) => ({
+              id : createId(),
+              ...value,
+            }))
+          )
+          .returning();
+
+        return c.json({ data });
+      } 
+    )
     .post(
       "/bulk-delete",
       clerkMiddleware(),
