@@ -12,10 +12,10 @@ import { Loader2, Plus } from "lucide-react";
 
 import { columns } from "./column";
 import { DataTable } from "@/components/Data-Table";
-import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
+import { useGetTransactions } from "@/features/transactions/api/use-get-transactions";
 import { accounts } from "@/db/schema";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts";
+import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions";
 
 // const data = [
 //     {
@@ -45,16 +45,16 @@ import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-a
 
 const TransactionPage = () => {
     const newTransaction = UseNewTransactions();
-    const AccountQuery = useGetAccounts();
-    const deleteAccounts = useBulkDeleteAccounts();
+    const TransactionQuery = useGetTransactions();
+    const BulkDeleteTransactions = useBulkDeleteTransactions();
 
     const isDisabled = 
-        AccountQuery.isLoading || 
-        deleteAccounts.isPending;
+    TransactionQuery.isLoading || 
+        BulkDeleteTransactions.isPending;
 
-    const accounts = AccountQuery.data || [];
+    const transactions = TransactionQuery.data || [];
 
-    if(AccountQuery.isLoading){
+    if(TransactionQuery.isLoading){
         return (
             <div className="max-width-2xl mx-auto w-full pb-10 -mt-24">
                 <Card className="border-none drop-shadow-sm">
@@ -84,9 +84,9 @@ const TransactionPage = () => {
                     </Button>
                 </CardHeader>
                 <CardContent >
-                    <DataTable filterKey="name" columns={columns} data={accounts} onDelete={(row) => {
+                    <DataTable filterKey="name" columns={columns} data={transactions} onDelete={(row) => {
                         const ids = row.map((r) => r.original.id);
-                        deleteAccounts.mutate({ ids });
+                        BulkDeleteTransactions.mutate({ ids });
                     }} disabled={isDisabled}/>
                 </CardContent>
             </Card>

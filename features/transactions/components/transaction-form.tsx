@@ -20,6 +20,7 @@ import { DatePicker } from "@/components/date-picker";
 import { Placeholder } from "drizzle-orm";
 import { Textarea } from "@/components/ui/textarea";
 import { AmountInput } from "@/components/amount-input";
+import { convertAmountToMilliUnits } from "@/lib/utils";
 
 const formSchema = z.object({
   date: z.coerce.date(),
@@ -66,8 +67,23 @@ export const TransactionForm = ({
   });
 
   const handleSubmit = (values: FormValues) => {
-    // onSubmit(values);
-    console.log({ values })
+    const amountValue = parseFloat(values.amount);
+    if (isNaN(amountValue)) {
+      console.error("Invalid amount:", values.amount);
+      return;
+    }
+    const amountInMilliUnits = convertAmountToMilliUnits(amountValue);
+    
+    const apiValues: ApiFormValues = {
+      ...values,
+      amount: amountInMilliUnits,// Ensure this is a string
+      accountid: values.accountId,
+      categoryid: values.categoryId,
+    };
+
+    console.log("Submitting:", apiValues);
+    onSubmit(apiValues);
+    console.log("submited")
   };
 
   const handleDelete = () => {
@@ -107,24 +123,26 @@ export const TransactionForm = ({
                   options={accountOptions}
                   onCreate={onCreateAccount}
                   value={field.value}
-                  onChange={field.onChange}
+                  onChange={(newValue) => {
+                    console.log("Selected category:", newValue);
+                    field.onChange(newValue);
+                  }}
                   disabled={disabled}
+                  // disabled={disabled}
                 />
               </FormControl>
             </FormItem>
           )} />
 
-        <FormField
+<FormField
           name="categoryId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                Account
-              </FormLabel>
+              <FormLabel>Category</FormLabel>
               <FormControl>
                 <Select
-                  placeholder="Create an category"
+                  placeholder="Create a category"
                   options={categoryOptions}
                   onCreate={onCreateCategory}
                   value={field.value}
@@ -133,7 +151,8 @@ export const TransactionForm = ({
                 />
               </FormControl>
             </FormItem>
-          )} />
+          )}
+        />
 
         <FormField
           name="payee"
