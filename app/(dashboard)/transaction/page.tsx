@@ -84,7 +84,7 @@ const TransactionPage = () => {
                     </Button>
                 </CardHeader>
                 <CardContent >
-                    <DataTable filterKey="name" columns={columns} data={transactions} onDelete={(row) => {
+                    <DataTable filterKey="payee" columns={columns} data={transactions} onDelete={(row) => {
                         const ids = row.map((r) => r.original.id);
                         BulkDeleteTransactions.mutate({ ids });
                     }} disabled={isDisabled}/>

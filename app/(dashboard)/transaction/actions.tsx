@@ -9,9 +9,9 @@ import {
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import { useOpenAccount } from "@/features/accounts/hooks/use-open-accounts";
+import { useOpenTransaction } from "@/features/transactions/hooks/use-open-transactions";
 import { useConfirm } from "@/hooks/use-confirm";
-import { useDeleteAccount } from "@/features/accounts/api/use-delete-account";
+import { useDeleteTransaction } from "@/features/transactions/api/use-delete-transaction";
 
 type Props = {
     id : string,
@@ -25,10 +25,10 @@ export const Actions = ({ id } : Props) => {
         "You are about to delete this transaction"
       );
 
-    const deleteMutation = useDeleteAccount(id);
+    const deleteMutation = useDeleteTransaction(id);
 
 
-    const { onOpen } = useOpenAccount();
+    const { onOpen } = useOpenTransaction();
     console.log(id);
 
     const handleDelete = async () => {

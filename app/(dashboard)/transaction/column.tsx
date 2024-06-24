@@ -12,6 +12,8 @@ import { Actions } from "./actions";
 import { format } from "date-fns";
 import { formatCurrency } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { AccountColumn } from "./account-column";
+import { CategoryColumn } from "./category-column";
 
 // this type is used to define our data 
 // can use zod schema here 
@@ -84,9 +86,11 @@ export const columns : ColumnDef<ResponseType>[] = [
                     cell: ({row}) =>{
                         const date = row.getValue("date") as Date;
                         return (
-                            <span>
-                                {row.original.category}
-                            </span>
+                            <CategoryColumn 
+                                id={row.original.id}
+                                category={row.original.category}
+                                categoryId={row.original.categoryid}
+                            />
                         )
                     }
     },
@@ -135,16 +139,17 @@ export const columns : ColumnDef<ResponseType>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.
                         getIsSorted() == "asc" )}>
-                            Category
+                            Account
                             <ArrowUpDown className="ml-4 h-4 w-4"/>
                         </Button>
                     )},
                     cell: ({row}) =>{
-                        const date = row.getValue("date") as Date;
+
                         return (
-                            <span>
-                                {row.original.account}
-                            </span>
+                            <AccountColumn
+                                account={row.original.account}
+                                accountId={row.original.accountid}
+                                />
                         )
                     }
     },
