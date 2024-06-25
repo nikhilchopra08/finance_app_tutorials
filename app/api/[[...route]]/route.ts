@@ -7,6 +7,7 @@ import accounts from "./accounts"
 import { HTTPException } from "hono/http-exception";
 import categories from "./categories"
 import transactions from "./transactions"
+import summary from "./summary"
 
 // import authors from "./authors";
 // import books from "./books";
@@ -29,7 +30,7 @@ const routes = app
     .route("/accounts" , accounts)
     .route("/categories" , categories)
     .route("/transactions" , transactions)
-
+    .route("/summary" , summary)
 
 // by default
 // app.get("/" , (c) => {

@@ -89,18 +89,17 @@ const TransactionPage = () => {
         const onSubmitImport = async (
             values: typeof transactionSchema.$inferInsert[],
         ) => {
-            const accountid = await confirm();
+            const accountId = await confirm();
     
-            if (!accountid) {
+            if (!accountId) {
                 return toast.error("Please select an account to continue");
             }
     
             const data = values.map((value) => ({
                 ...value,
-                accountid: accountid
+                accountId: accountId
             }));
-
-            console.log(data);
+            
     
             createTransactions.mutate(data, {
                 onSuccess: () => {
@@ -157,9 +156,9 @@ const TransactionPage = () => {
                         <Plus className="size-4 mr-2" />
                         Add new
                     </Button>
-                    <UploadButton 
+                    {/* <UploadButton 
                         onUpload={onUpload}
-                    />
+                    /> */}
                     </div>
                 </CardHeader>
                 <CardContent >
