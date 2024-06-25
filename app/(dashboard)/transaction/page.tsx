@@ -19,6 +19,10 @@ import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-
 import { useState } from "react";
 import { UploadButton } from "./upload-button";
 import { ImportCard } from "./import-card";
+import { transactions as transactionSchema } from "@/db/schema"
+import { useSelectAccount } from "@/features/accounts/hooks/use-select-account";
+import { toast } from "sonner";
+import { useBulkCreateTransactions } from "@/features/transactions/api/use-bulk-create-transactions";
 
 // const data = [
 //     {
@@ -58,6 +62,7 @@ const INITIAL_IMPORT_RESULTS = {
 }
 
 const TransactionPage = () => {
+    const [AccountDialog , confirm] = useSelectAccount();
     const [variant , setVariant] = useState<VARIANTS>(VARIANTS.LIST);
     const [importResults , setImportResults] = useState(INITIAL_IMPORT_RESULTS);
 
@@ -75,10 +80,35 @@ const TransactionPage = () => {
     const newTransaction = UseNewTransactions();
     const TransactionQuery = useGetTransactions();
     const BulkDeleteTransactions = useBulkDeleteTransactions();
+    const createTransactions = useBulkCreateTransactions();
 
     const isDisabled = 
     TransactionQuery.isLoading || 
         BulkDeleteTransactions.isPending;
+
+        const onSubmitImport = async (
+            values: typeof transactionSchema.$inferInsert[],
+        ) => {
+            const accountid = await confirm();
+    
+            if (!accountid) {
+                return toast.error("Please select an account to continue");
+            }
+    
+            const data = values.map((value) => ({
+                ...value,
+                accountid: accountid
+            }));
+
+            console.log(data);
+    
+            createTransactions.mutate(data, {
+                onSuccess: () => {
+                    console.log("ghvn");
+                    onCancelImport();
+                },
+            });
+        };
 
     const transactions = TransactionQuery.data || [];
 
@@ -102,11 +132,12 @@ const TransactionPage = () => {
     if(variant === VARIANTS.IMPORT){
         return (
             <>
-                <ImportCard 
+                <AccountDialog />
+                    <ImportCard 
                     data={importResults.data}
                     onCancel={onCancelImport}
-                    onSubmit={() => {}}
-                />
+                    onSubmit={onSubmitImport}
+                    />
             </>
         )
     }

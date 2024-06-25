@@ -117,7 +117,7 @@ export const ImportCard = ({
             };
         });
 
-        // console.log({ formattedData });
+        console.log({ formattedData });
         onSubmit(formattedData);
     }
 
