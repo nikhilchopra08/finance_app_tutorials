@@ -1,4 +1,5 @@
 import { DataGrid } from "@/components/Data-Grid";
+import { DataCharts } from "@/components/data-charts";
 
 export default function DashBoardPage(){
   return (

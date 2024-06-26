@@ -77,28 +77,26 @@ export function DataTable<TData, TValue>({
           value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) => (
             table.getColumn(filterKey)?.setFilterValue(event.target.value)
-          )
-          }
+          )}
           className="max-w-sm"
         />
-        {table.getFilteredSelectedRowModel().rows.length > 0 && (
+        {Object.keys(rowSelection).length > 0 && (
           <Button
             disabled={disabled}
             size="sm"
             variant="outline"
             className="ml-auto font-normal text-xs"
             onClick={async () => {
-              console.log("up")
               const ok = await confirm();
-              console.log("down")
               if (ok) {
-                onDelete(table.getFilteredRowModel().rows);
+                const selectedRows = table.getSelectedRowModel().rows;
+                onDelete(selectedRows);
                 table.resetRowSelection();
               }
             }}
           >
             <Trash className="size-4 mr-2" />
-            Delete ({table.getFilteredSelectedRowModel().rows.length})
+            Delete ({Object.keys(rowSelection).length})
           </Button>
         )}
       </div>
@@ -154,7 +152,7 @@ export function DataTable<TData, TValue>({
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {Object.keys(rowSelection).length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <Button
