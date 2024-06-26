@@ -4,6 +4,7 @@ import { Navigation } from "./Navigation";
 import { Loader2 } from "lucide-react";
 import { WelcomeMsg } from "./welcome-msg";
 import { FIlter } from "./filter";
+import { DateFilter } from "./date-filter";
 
 export const Header = () => {
     return (
@@ -22,8 +23,10 @@ export const Header = () => {
                     </ClerkLoading>
                 </div>
                 <WelcomeMsg/>
+                <div className="flex gap-x-4">
                 <FIlter />
                 <DateFilter />
+                </div>
             </div>
         </header>
     );
