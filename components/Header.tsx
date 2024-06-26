@@ -23,6 +23,7 @@ export const Header = () => {
                 </div>
                 <WelcomeMsg/>
                 <FIlter />
+                <DateFilter />
             </div>
         </header>
     );
