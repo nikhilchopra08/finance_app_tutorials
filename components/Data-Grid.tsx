@@ -30,7 +30,7 @@ export const DataGrid = () => {
         <div className="grid grid-col-1 lg:grid-cols-3 gap-8 pb-2 mb-8">
 
             <DataCard
-                title="remaning amount"
+                title="Remaning amount"
                 value={data?.remainingAmount}
                 percentageChange = {data?.remainingChange}
                 icon = {FaPiggyBank}
