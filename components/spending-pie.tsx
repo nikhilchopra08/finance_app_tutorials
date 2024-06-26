@@ -1,4 +1,4 @@
-import { FileSearch , PieChart , Radar , Target } from "lucide-react";
+import { FileSearch , Loader2, PieChart , Radar , Target } from "lucide-react";
 import {
     Card,
     CardHeader,
@@ -20,6 +20,9 @@ import { LineVarient } from "./line-variant";
 
 import { useState } from "react";
 import { PieVariant } from "./pie-varient";
+import { RadarVariant } from "./radar-variant";
+import { RadialVariant } from "./radial-vairant";
+import { Skeleton } from "./ui/skeleton";
 
 type Props = {
     data?: {
@@ -62,6 +65,12 @@ export const SpendingPie = ({ data = [] } : Props) => {
                                 <p className="line-clamp-1">Radar Chart</p>
                             </div>
                         </SelectItem>
+                        <SelectItem value="radial">
+                            <div className="flex items-center">
+                                <Radar className="size-4 mr-2 shrink-0"/>
+                                <p className="line-clamp-1">Radial Chart</p>
+                            </div>
+                        </SelectItem>
                     </SelectContent>
                 </Select>
             </CardHeader>
@@ -74,8 +83,24 @@ export const SpendingPie = ({ data = [] } : Props) => {
                 ) : (
                     <>
                         {chartType === "pie" && <PieVariant data={data} />} 
+                        {chartType === "radar" && <RadarVariant data={data} />} 
+                        {chartType === "radial" && <RadialVariant data={data} />}
                     </>
                 )}
+            </CardContent>
+        </Card>
+    )
+}
+
+export const PieLoading = () => {
+    return(
+        <Card className="border-none drop-shadow-sm">
+            <CardHeader className="flex space-y-2 lg:space-y-2 lg:flex-row lg:items-center justify-between">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-8 lg:w-[120px] w-full"/>
+            </CardHeader>
+            <CardContent className="h-[350px] w-full flex items-center justify-center">
+                <Loader2 className="size-6 text-slate-300 animate-spin" />
             </CardContent>
         </Card>
     )
